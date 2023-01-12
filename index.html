@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section class="grid"></section>
+    <section id="control_box">
+        <div id="left" class="button">left</div>
+        <div id="right" class="button">right</div>
+        <div id="top" class="button">top</div>
+        <div id="bottom" class="button">bottom</div>
+    </section>
+</body>
+    <script>
+        const w = 20;
+        const h = 20;
+        var actalY = 1
+        var actalX = 1
+
+        for (let i = 1; i <= w*h;i++) {
+            const box = document.createElement('div')
+            box.setAttribute('id',`${actalX}x${actalY}`)
+            if (i == 20 || i == 40 || i == 60 || i == 80 || i == 100 || i == 120 || i == 140 || i == 160 || i == 180 || i == 200 || i == 220 || i == 240 || i == 260 || i == 280 || i == 300 || i == 320 || i == 340 || i == 360 || i == 380 || i == 400) {
+                actalY += 1
+            }
+            box.classList.add('pole')
+            document.querySelector('.grid').appendChild(box)      
+            actalX += 1
+            if (actalX > 20) {
+                actalX = 1
+            }
+        }
+        
+
+        var move_1 = [
+            // RADIUS 1
+            {'x':0,'y':-1,'type':1},
+            {'x':1,'y':-1,'type':1},
+            {'x':1,'y':0,'type':1},
+            {'x':1,'y':1,'type':1},
+            {'x':0,'y':1,'type':1},
+            {'x':-1,'y':1,'type':1},
+            {'x':-1,'y':0,'type':1},
+            {'x':-1,'y':-1,'type':1},
+            // RADIUS 2
+            {'x':-2,'y':0,'type':2},
+            {'x':-2,'y':1,'type':2},
+            {'x':-2,'y':-1,'type':2},
+            // 
+            {'x':2,'y':0,'type':2},
+            {'x':2,'y':1,'type':2},
+            {'x':2,'y':-1,'type':2},
+            // 
+            {'x':-1,'y':2,'type':2},
+            {'x':0,'y':2,'type':2},
+            {'x':1,'y':2,'type':2},
+            // 
+            {'x':-1,'y':-2,'type':2},
+            {'x':0,'y':-2,'type':2},
+            {'x':1,'y':-2,'type':2},
+        ]
+
+        var playerX = 5;
+        var playerY = 6;
+
+        function drawPlayer() {
+            if(playerX > w) { playerX = 1 }
+            if(playerX < 1) { playerX = w }
+            if (playerY > h) { playerY = 1 }
+            if (playerY < 1) { playerY = h }
+
+            document.querySelectorAll('.pole').forEach((e) => {
+                if (e.id == `${playerX}x${playerY}`) {
+                e.classList.add('player')
+            }
+            })
+        }
+        drawPlayer()
+
+        function drawRange() {
+            move_1.forEach((e) => {
+                try {
+                    var rangeX = parseInt(playerX)+e.x
+                    var rangeY = parseInt(playerY)+e.y
+                    // LEWO PRAWO
+                    if (rangeX < 1) { rangeX = w - (rangeX * -1) }
+                    if (rangeX > w) { rangeX = 0 + e.x - (w - playerX) }
+                    // GÓRA DÓŁ
+                    if (rangeY < 1) { rangeY = h - (rangeY * -1) }
+                    if (rangeY > h) { rangeY = 0 + e.y - (h - playerY) }
+                    const element = document.getElementById(`${rangeX}x${rangeY}`)
+                    element.classList.add('active')
+                    if (e.type == 1) {
+                        element.style.background = `rgba(255, 0, 0, 0.5)`
+                    } else if (e.type == 2) {
+                        element.style.background = `rgba(255, 0, 0, 0.3)`
+                    }
+                } catch (error) {
+                    
+                }
+            })
+        }
+        drawRange()
+
+
+        function animate() {
+            document.querySelectorAll('.pole').forEach((e) => {
+                e.classList.remove('player')
+                e.classList.remove('active')
+                e.style.background = 'none'
+            })
+            drawPlayer()
+            drawRange()
+        }
+        // var interval = setInterval(animate, 1000)
+
+        document.querySelector('#left').addEventListener('click',(e) =>{
+            playerX -= 1
+            animate()
+        })
+        document.querySelector('#right').addEventListener('click',(e) =>{
+            playerX += 1
+            animate()
+        })
+        document.querySelector('#top').addEventListener('click',(e) =>{
+            playerY -= 1
+            animate()
+        })
+        document.querySelector('#bottom').addEventListener('click',(e) =>{
+            playerY += 1
+            animate()
+        })
+
+        document.onkeydown = function (e) {
+            // console.log('key down');
+            // console.log(e);
+            if(e.key == 'ArrowUp') {
+                playerY -= 1
+                animate()
+            }
+            if(e.key == 'ArrowDown') {
+                playerY += 1
+                animate()
+            }
+            if(e.key == 'ArrowRight') {
+                playerX += 1
+                animate()
+            }
+            if(e.key == 'ArrowLeft') {
+                playerX -= 1
+                animate()
+            }
+        };
+    </script>
+</html>

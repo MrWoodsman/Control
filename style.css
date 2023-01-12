@@ -1,0 +1,45 @@
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  gap: 32px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(20, 25px);
+  grid-template-rows: repeat(20, 25px);
+  border: 1px solid black;
+  overflow: hidden;
+}
+.grid .player {
+  position: relative;
+  z-index: 10;
+  border-radius: 50%;
+  background: rgba(255, 166, 0, 0.75) !important;
+}
+.grid .active {
+  background: rgba(255, 0, 0, 0.5);
+  filter: blur(16px);
+}
+
+#control_box {
+  display: flex;
+  gap: 8px;
+}
+#control_box .button {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  width: 50px;
+  height: 50px;
+  background: grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(17, 17, 17, 0.3) 2px 2px 12px;
+}/*# sourceMappingURL=style.css.map */
